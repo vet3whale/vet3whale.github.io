@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   site: "https://vet3whale.github.io",
-  base: "/portfolio",
+  base: "/",
   vite: {
     plugins: [tailwindcss()],
   },
