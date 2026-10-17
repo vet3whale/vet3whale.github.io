@@ -1,0 +1,8 @@
+---
+import { projects } from "../../data/projects";
+import ProjectLayout from "../../layouts/Project.astro";
+
+const project = projects.find(({ slug }) => slug === "cg2271")!;
+---
+
+<ProjectLayout project={project} />

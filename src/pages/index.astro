@@ -1,159 +1,85 @@
 ---
-import { getCollection } from "astro:content";
-import Container from "@components/Container.astro";
-import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/ArrowCard.astro";
-import Link from "@components/Link.astro";
-import { dateRange } from "@lib/utils";
-import { SITE, HOME, SOCIALS } from "@consts";
+import { Image } from "astro:assets";
+import portrait from "../../assets/vetri.png";
+import Base from "../layouts/Base.astro";
 
-const blog = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
-
-const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_PROJECTS_ON_HOMEPAGE);
-
-const allwork = (await getCollection("work"))
-  .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())
-  .slice(0,SITE.NUM_WORKS_ON_HOMEPAGE);
-
-const work = await Promise.all(
-  allwork.map(async (item) => {
-    const { Content } = await item.render();
-    return { ...item, Content };
-  })
-);
-
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-  <Container>
-    <h4 class="animate font-semibold text-black dark:text-white">
-      Hi, I'm Nano <span class="text-xl">👋🏻</span> 
-    </h4>
-    <div class="space-y-16">
-      <section>
-        <article class="space-y-4">
-          <p class="animate">
-            I am a minimal, seo friendly, accessible portfolio and blog for developers. 
-            I am an even more lightweight version of my popular theme
-            <Link href="https://github.com/markhorn-dev/astro-sphere" aria-label="Astro Sphere on Github" external>
-              Astro Sphere
-            </Link>.
-            I have a lighthouse scores of 100 across the board for performance, 
-            accesibility, best practices and SEO.
-          </p>
-          <p class="animate">
-            I come packed with full type safety, a sitemap, an rss feed, markdown 
-            and mdx support (use components in your markdown) through astro integrations.
-            I am styled with tailwind and come preconfigured with light, dark and 
-            system/os theme preferences out of the box.
-          </p>
-          <p class="animate">
-            Visit
-            <Link href="https://github.com/markhorn-dev/astro-nano" aria-label="Astro Nano on Github" external>
-              Astro Nano on Github
-            </Link>
-            to fork the repository, read the docs or one-click deploy on Vercel or Netlify. 
-          </p>
-        </article>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Latest posts
-          </h5>
-          <Link href="/blog">
-            See all posts
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {blog.map(post => (
-            <li>
-              <ArrowCard entry={post} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Work Experience
-          </h5>
-          <Link href="/work">
-            See all work
-          </Link>
-        </div>
-        <ul class="flex flex-col space-y-4">
-          {work.map(entry => (
-            <li>
-              <div class="text-sm opacity-75">
-                {dateRange(entry.data.dateStart, entry.data.dateEnd)}
-              </div>
-              <div class="font-semibold text-black dark:text-white">
-                {entry.data.company}
-              </div>
-              <div class="text-sm opacity-75">
-                {entry.data.role}
-              </div>
-              <article>
-                <entry.Content />
-              </article>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Recent projects
-          </h5>
-          <Link href="/projects">
-            See all projects
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {projects.map(project => (
-            <li>
-              <ArrowCard entry={project} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">
-          Let's Connect
-        </h5>
-        <article>
-          <p>
-            If you want to get in touch with me about something or just to say hi,
-            reach out on social media or send me an email.
-          </p>
-        </article>
-        <ul class="flex flex-wrap gap-2">
-          {SOCIALS.map(SOCIAL => (
-            <li class="flex gap-x-2 text-nowrap">
-              <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
-                {SOCIAL.NAME}
-              </Link>
-              {"/"}
-            </li>
-          ))}
-          <li class="line-clamp-1">
-            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
-              {SITE.EMAIL}
-            </Link>
-          </li>
-        </ul>
-      </section>
+<Base title="Vetri" description="Vetri's portfolio.">
+  <main class="home">
+    <div class="intro">
+      <div class="identity">
+        <p class="name">Vetri</p>
+        <p class="summary">
+          Year 3 NUS Computer Engineering Student.
+          <br />
+          Minor in AI.
+          <br />
+          Specialisation in Advanced Electronics.
+          <br />
+          Interested in Embedded Systems and Edge AI.
+        </p>
+      </div>
+      <div class="links">
+        <nav aria-label="Portfolio">
+          <a href={`${base}/projects/`}>projects</a>
+          <a href={`${base}/resume/`}>resume</a>
+        </nav>
+        <nav class="social-links" aria-label="Social links">
+          <a
+            class="icon-link"
+            href="https://www.linkedin.com/in/vetrivel-karthikeyan/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M0 1.15C0 .51.53 0 1.18 0h13.64C15.47 0 16 .51 16 1.15v13.7c0 .64-.53 1.15-1.18 1.15H1.18C.53 16 0 15.49 0 14.85V1.15Zm4.94 12.24V6.17H2.54v7.22h2.4ZM3.74 5.18c.84 0 1.36-.56 1.36-1.25-.02-.71-.52-1.25-1.34-1.25-.82 0-1.36.54-1.36 1.25 0 .69.52 1.25 1.31 1.25h.03Zm4.9 8.21V9.36c0-.22.02-.43.08-.59.17-.43.56-.88 1.22-.88.86 0 1.2.66 1.2 1.62v3.88h2.4V9.23c0-2.23-1.19-3.27-2.78-3.27-1.28 0-1.85.7-2.17 1.2v.03h-.02l.02-.03V6.17h-2.4c.03.66 0 7.22 0 7.22h2.4Z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            class="icon-link"
+            href="https://github.com/vet3whale"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.7-.01-1.38-2.23.49-2.7-1.09-2.7-1.09-.36-.94-.89-1.19-.89-1.19-.73-.5.05-.5.05-.5.81.06 1.23.84 1.23.84.72 1.25 1.88.89 2.34.68.07-.53.28-.89.51-1.09-1.78-.21-3.65-.9-3.65-4.02 0-.89.31-1.61.82-2.18-.08-.2-.36-1.03.08-2.15 0 0 .67-.22 2.2.83A7.53 7.53 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.05 2.2-.83 2.2-.83.44 1.12.16 1.95.08 2.15.51.57.82 1.29.82 2.18 0 3.13-1.88 3.81-3.66 4.01.29.25.54.75.54 1.51 0 1.09-.01 1.97-.01 2.24 0 .22.15.47.55.39A8.13 8.13 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            class="icon-link"
+            href="mailto:vetrivel.karthikeyan@u.nus.edu"
+            aria-label="Email Vetri"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-.5a.5.5 0 0 0-.5.5v.22l6.5 3.9 6.5-3.9V4a.5.5 0 0 0-.5-.5H2Zm12.5 2.47-4.93 2.96 4.93 3V5.97Zm-.68 6.53L8 8.96 2.18 12.5h11.64ZM1.5 11.93l4.93-3-4.93-2.96v5.96Z"
+              ></path>
+            </svg>
+          </a>
+        </nav>
+      </div>
     </div>
-  </Container>
-</PageLayout>
+
+    <figure class="portrait">
+      <Image
+        src={portrait}
+        alt="Vetri seated on a boat with city buildings behind him"
+        widths={[160, 240, 320, 480, 640]}
+        sizes="clamp(6.75rem, 22vw, 20rem)"
+        format="webp"
+        quality={82}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </figure>
+  </main>
+</Base>

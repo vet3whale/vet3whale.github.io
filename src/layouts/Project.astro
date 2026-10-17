@@ -1,0 +1,77 @@
+---
+import { Image } from "astro:assets";
+import ProjectText from "../components/ProjectText.astro";
+import type { Project } from "../data/projects";
+import Base from "./Base.astro";
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<Base title={`${project.title} — Vetri`} description={project.summary}>
+  <main class="project-page">
+    <a class="page-back" href={`${base}/projects/`}>Projects</a>
+    <article>
+      <header class="project-heading">
+        <h1><ProjectText text={project.title} /></h1>
+      </header>
+      <div class:list={["project-overview", { "without-image": !project.image }]}>
+        <div class="project-description">
+          <p>{project.description}</p>
+          {project.repository && (
+            <a class="project-repository" href={project.repository} target="_blank" rel="noopener noreferrer">
+              View code on GitHub <span aria-hidden="true">↗</span>
+              <span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          )}
+        </div>
+        {project.image && (
+          <figure class="project-photo">
+            <Image
+              src={project.image.src}
+              alt={project.image.alt}
+              widths={[120, 200, 320, 480, 640]}
+              sizes="(max-width: 544px) 28vw, 12rem"
+              format="webp"
+              quality={82}
+              loading="eager"
+              decoding="async"
+            />
+          </figure>
+        )}
+      </div>
+      <table class="project-facts">
+        <caption>At a glance</caption>
+        <tbody>
+          {project.facts.map(({ label, value }) => (
+            <tr>
+              <th scope="row">{label}</th>
+              <td>{value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="module-note">
+        Completed in {project.year} for {project.module} {project.moduleName} at NUS.
+      </p>
+      <section class="project-documents" aria-labelledby="documents-heading">
+        <h2 id="documents-heading">Documents</h2>
+        {project.documents.map((document) => (
+          <details class="pdf-disclosure">
+            <summary>{document.label}</summary>
+            <div class="pdf-panel">
+              <a href={document.url} target="_blank" rel="noreferrer">{document.linkLabel}</a>
+              <iframe
+                class="pdf-viewer"
+                src={document.url}
+                title={`${project.title} — ${document.label}`}
+                loading="lazy"
+              ></iframe>
+            </div>
+          </details>
+        ))}
+      </section>
+    </article>
+  </main>
+</Base>

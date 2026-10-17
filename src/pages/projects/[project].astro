@@ -1,0 +1,16 @@
+---
+import { projects } from "../../data/projects";
+import ProjectLayout from "../../layouts/Project.astro";
+
+export function getStaticPaths() {
+  // Baymax keeps its existing explicit route.
+  return projects.filter(({ slug }) => slug !== "cg2271").map((project) => ({
+    params: { project: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<ProjectLayout project={project} />

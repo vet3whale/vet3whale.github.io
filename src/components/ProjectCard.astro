@@ -1,0 +1,41 @@
+---
+import { Image } from "astro:assets";
+import ProjectText from "./ProjectText.astro";
+import type { Project } from "../data/projects";
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<a
+  class:list={["project-tile", { "project-tile-internship": project.kind === "internship" }]}
+  href={`${base}/projects/${project.slug}/`}
+>
+  <div class:list={["project-card-copy", { "without-image": !project.image }]}>
+    <div>
+      <h3 class="project-title"><ProjectText text={project.title} /></h3>
+      <p class="project-card-description">{project.summary}</p>
+    </div>
+    {project.image && (
+      <Image
+        class="project-card-image"
+        src={project.image.src}
+        alt=""
+        widths={[96, 192, 288]}
+        sizes="5.5rem"
+        format="webp"
+        quality={82}
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+  </div>
+  <ul class="project-tags" aria-label="Technologies">
+    {project.tags.map((tag) => <li><ProjectText text={tag} /></li>)}
+  </ul>
+  <div class="project-card-footer">
+    <span class="project-meta">{project.kind === "internship" && "Internship · "}{project.module}</span>
+    <span class="project-card-action">View project <span aria-hidden="true">→</span></span>
+  </div>
+</a>

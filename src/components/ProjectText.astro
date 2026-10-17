@@ -1,0 +1,8 @@
+---
+interface Props { text: string }
+const { text } = Astro.props;
+---
+
+{text.split(/(\bAM\b)/).map((part) => (
+  part === "AM" ? <span class="preserve-case">{part}</span> : part
+))}
