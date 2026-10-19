@@ -11,7 +11,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 <Base title={`${project.title} — Vetri`} description={project.summary}>
   <main class="project-page">
-    <a class="page-back" href={`${base}/projects/`}>Projects</a>
+    <a class="page-back" href={`${base}/projects/`} aria-keyshortcuts="Escape">Projects</a>
     <article>
       <header class="project-heading">
         <h1><ProjectText text={project.title} /></h1>

@@ -25,5 +25,31 @@ const canonicalUrl = Astro.site
   </head>
   <body>
     <slot />
+    <script>
+      const backLink = document.querySelector<HTMLAnchorElement>(".page-back[href]");
+
+      if (backLink) {
+        window.addEventListener("keydown", (event) => {
+          const target = event.target;
+          const isEditing = target instanceof HTMLElement && (
+            target.isContentEditable ||
+            target.matches("input, textarea, select")
+          );
+
+          if (
+            event.key !== "Escape" ||
+            event.defaultPrevented ||
+            event.repeat ||
+            event.isComposing ||
+            isEditing ||
+            document.fullscreenElement ||
+            document.querySelector("dialog[open]")
+          ) return;
+
+          event.preventDefault();
+          backLink.click();
+        });
+      }
+    </script>
   </body>
 </html>
