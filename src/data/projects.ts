@@ -6,6 +6,7 @@ import amImage from "../../assets/y2/cg2023/image.png";
 import fastImage from "../../assets/y2/cg2028/image.png";
 import calculatorImage from "../../assets/y2/ee2026/image.png";
 import locomotionImage from "../../assets/internship/steng/image.png";
+import locomotionWorkflowImage from "../../assets/internship/steng/training-workflow.png";
 import baymaxReport from "../../assets/y2/cg2271/B02_03_Final.pdf?url";
 import baymaxSchematic from "../../assets/y2/cg2271/CG2271B02T3_Baymax_Schematic.pdf?url";
 import mazeReport from "../../assets/y1/cg1111a/B02-S3-T2-REPORT.pdf?url";
@@ -23,10 +24,13 @@ export interface Project {
   module: string;
   moduleName: string;
   summary: string;
+  cardDescription: string;
+  purpose?: string;
   description: string;
   tags: string[];
   repository?: string;
   image?: { src: ImageMetadata; alt: string };
+  workflow?: { src: ImageMetadata; alt: string };
   facts: { label: string; value: string }[];
   documents: { label: string; url: string; linkLabel: string }[];
 }
@@ -42,8 +46,10 @@ export const projects: Project[] = [
     module: "CG2271",
     moduleName: "Real-Time Operating Systems",
     summary: "Monitors study conditions and sends AI-generated feedback after each session.",
+    cardDescription: "Built a system that monitored study conditions and suggested improvements.",
+    purpose: "Developed a study-environment monitoring system that helped students identify and improve conditions that could affect their focus",
     description: "Baymax monitors light, noise, temperature and humidity during study sessions. It flags poor conditions with an LED and buzzer, then sends AI-generated feedback via Telegram when the session ends.",
-    tags: ["RTOS", "MCXC444", "ESP32", "OS"],
+    tags: ["FreeRTOS", "MCXC444", "ESP32"],
     image: { src: baymaxImage, alt: "Baymax prototype with two microcontroller boards, breadboard sensors and an OLED display" },
     facts: [
       { label: "Hardware", value: "MCXC444 + ESP32-S2" },
@@ -59,13 +65,15 @@ export const projects: Project[] = [
   },
   {
     slug: "cg2023",
-    title: "AM Modulation & Demodulation",
+    title: "Amplitude Modulation & Demodulation",
     year: 2026,
     module: "CG2023",
     moduleName: "Signals and Systems",
     summary: "Modulates a single-tone signal and recovers it through analogue filtering.",
+    cardDescription: "Built an analogue AM circuit to transmit and recover message signals.",
+    purpose: "Designed an analogue amplitude modulation and demodulation circuit to investigate the transmission and recovery of message signals",
     // Report pp. 2–7: signal configuration, envelope detector and Butterworth filter.
-    description: "A single-tone amplitude modulation and demodulation circuit. An envelope detector and low-pass filter recover the message, with waveforms and spectra measured using Analog Discovery 2.",
+    description: "This single-tone amplitude modulation and demodulation circuit uses an envelope detector and low-pass filter to recover the original message signal. Waveforms and spectra were measured using Analog Discovery 2.",
     tags: ["Analogue circuits", "AM", "Filtering"],
     image: { src: amImage, alt: "Amplitude modulation circuit on a breadboard connected to measurement equipment" },
     facts: [
@@ -84,9 +92,11 @@ export const projects: Project[] = [
     module: "CG2028",
     moduleName: "Computer Organization",
     summary: "Detects falls and notifies caregivers through Telegram.",
+    cardDescription: "Detected falls and alerted caregivers to potential emergencies.",
+    purpose: "Developed an embedded fall-detection and alert system that enabled caregivers to respond quickly to potential emergencies",
     // Presentation slides 24–35 and 40: detection, alerts and individual contributions.
-    description: "FAST (Fall Alert System) combines motion sensing on an STM32 with a Python application to detect falls. It sends Telegram alerts and a 3D fall visualisation, with a physical assistance button and buzzer feedback.",
-    tags: ["STM32", "Interrupts", "Multiple Peripheral Systems"],
+    description: "FAST (Fall Alert System) combines motion sensing on an STM32 with a Python application to detect falls. The Python application sends Telegram alerts and renders a 3D fall visualisation, while an assistance button and buzzer provide local feedback.",
+    tags: ["STM32", "Interrupts", "Peripheral Integration"],
     image: { src: fastImage, alt: "FAST prototype with an STM32 board, assistance button and buzzer in a protective case" },
     facts: [
       { label: "Sensors", value: "Accelerometer, gyroscope and barometer" },
@@ -106,10 +116,16 @@ export const projects: Project[] = [
     module: "EG3612",
     moduleName: "Vacation Industrial Attachment",
     summary: "Trains robot locomotion policies using reinforcement learning and depth-based imitation.",
+    cardDescription: "Built an RL-based training pipeline for Unitree B2W locomotion across search-and-rescue terrain.",
+    purpose: "Built a training pipeline for robust Unitree B2W locomotion across search-and-rescue terrain",
     // Report pp. 2–8. Only the walking expert was trained; deployment was future work.
-    description: "An RL-based training framework for robust Unitree B2W locomotion, developed during my ST Engineering internship. A walking expert teaches a depth-camera student policy, followed by PPO fine-tuning and simulation evaluation.",
-    tags: ["Isaac Sim", "PyTorch", "RL", "PPO"],
+    description: "During my ST Engineering internship, I developed an RL-based framework that uses a walking expert to teach a depth-camera student policy, followed by PPO fine-tuning and simulation evaluation.",
+    tags: ["Isaac Sim", "PyTorch", "RL", "PPO", "CNN"],
     image: { src: locomotionImage, alt: "Unitree B2W wheeled-quadruped robot" },
+    workflow: {
+      src: locomotionWorkflowImage,
+      alt: "Three-stage Unitree B2W training workflow showing the privileged expert, depth student and reinforcement-learning fine-tuning stages",
+    },
     facts: [
       { label: "Platform", value: "Unitree B2W in Isaac Sim and Isaac Lab" },
       { label: "Training", value: "PPO expert training and DAgger student distillation" },
@@ -127,6 +143,8 @@ export const projects: Project[] = [
     module: "CG2111A",
     moduleName: "Engineering Principles and Practice II",
     summary: "A remotely operated robot for mapping, rescue and medpak delivery.",
+    cardDescription: "Built a teleoperated rescue robot with LiDAR mapping for casualty rescue and medical-supply delivery.",
+    purpose: "Developed a teleoperated rescue robot that used LiDAR to map hazardous environments and enabled a remote operator to rescue casualties and deliver medical supplies",
     // Report cover and pp. 3–10: role, system architecture and teleoperation.
     description: "Alex is a teleoperated search-and-rescue robot built for a simulated lunar environment. It maps the area with LiDAR, retrieves a stranded astronaut with a claw and delivers a medpak.",
     tags: ["RPi", "SLAM", "LiDAR", "TCP/IP"],
@@ -136,7 +154,7 @@ export const projects: Project[] = [
       { label: "Control", value: "Wireless teleoperation over TLS; UART between boards" },
       { label: "Mapping", value: "LiDAR and BreezySLAM, visualised through ROS" },
       { label: "Actuation", value: "Rescue claw and medpak trapdoor" },
-      { label: "My role", value: "Communications and command issuing" },
+      { label: "My role", value: "Command-and-control communications" },
     ],
     documents: [{ label: "Final Report", url: alexReport, linkLabel: "Open the report in a new tab" }],
   },
@@ -148,8 +166,10 @@ export const projects: Project[] = [
     module: "EE2026",
     moduleName: "Digital Design",
     summary: "An FPGA calculator for graphs, matrices, polynomials and bit operations.",
+    cardDescription: "Built an FPGA calculator for graph plotting, matrix operations, polynomial root solving and bit manipulation.",
+    purpose: "Developed a multifunction FPGA calculator with graph plotting, matrix operations, polynomial root solving and bit-manipulation capabilities",
     // Report pp. 1–2 are image-based; verified from rendered pages.
-    description: "A multi-mode FPGA calculator with a mouse-operated OLED interface. It supports graph plotting, best-fit lines, matrix calculations, polynomial roots and bit operations.",
+    description: "GPMB provides graph, polynomial, matrix and bit calculation modes through a mouse-operated OLED interface. It supports graph plotting, best-fit lines, matrix operations, polynomial root solving and bit manipulation.",
     tags: ["FPGA", "Verilog"],
     image: { src: calculatorImage, alt: "Basys 3 FPGA board connected to an OLED calculator menu and a mouse" },
     facts: [
@@ -168,8 +188,10 @@ export const projects: Project[] = [
     module: "CG1111A",
     moduleName: "Engineering Principles and Practice I",
     summary: "An autonomous mBot that navigates a maze using wall sensing and colour cues.",
+    cardDescription: "Built an autonomous maze robot using PID navigation and colour-coded waypoints.",
+    purpose: "Developed an autonomous robot that navigated a maze using PID wall-following control and colour-coded waypoint detection",
     // Report pp. 4, 17–18 and 31–33: task, navigation and colour classification.
-    description: "An autonomous mBot that follows a maze and turns at colour-coded waypoints. Ultrasonic and infrared sensing guide its movement, while a custom colour circuit identifies the next manoeuvre.",
+    description: "An autonomous mBot that navigates a maze and turns at colour-coded waypoints. Ultrasonic PID wall-following and infrared sensing guide its movement, while a custom colour-sensing circuit identifies each manoeuvre.",
     tags: ["mBot", "PID", "KNN"],
     image: { src: mazeImage, alt: "Side view of the blue maze-navigation mBot with ultrasonic sensors and onboard circuitry" },
     facts: [

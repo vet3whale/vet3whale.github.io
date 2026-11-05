@@ -18,7 +18,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
       </header>
       <div class:list={["project-overview", { "without-image": !project.image }]}>
         <div class="project-description">
+          {project.purpose && <p><strong>Purpose</strong>: {project.purpose}.</p>}
           <p>{project.description}</p>
+          {project.workflow && (
+            <figure class="project-workflow">
+              <button class="workflow-expand" type="button" aria-label="Expand training workflow" aria-haspopup="dialog" aria-controls="workflow-dialog">
+              <Image
+                src={project.workflow.src}
+                alt={project.workflow.alt}
+                widths={[480, 768, 1183]}
+                sizes="(max-width: 700px) 100vw, 42rem"
+                format="webp"
+                quality={88}
+                loading="eager"
+                decoding="async"
+              />
+              </button>
+              <dialog id="workflow-dialog" class="workflow-dialog" aria-label="Training workflow">
+                <form method="dialog"><button class="workflow-close" autofocus>Close</button></form>
+                <img src={project.workflow.src.src} alt={project.workflow.alt} width={project.workflow.src.width} height={project.workflow.src.height} />
+              </dialog>
+            </figure>
+          )}
           {project.repository && (
             <a class="project-repository" href={project.repository} target="_blank" rel="noopener noreferrer">
               View code on GitHub
@@ -53,7 +74,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
         </tbody>
       </table>
       <p class="module-note">
-        Completed in {project.year} for {project.module} {project.moduleName} at NUS.
+        Completed in {project.year} as part of {project.module}: {project.moduleName} at NUS.
       </p>
       <section class="project-documents" aria-labelledby="documents-heading">
         <h2 id="documents-heading">Documents</h2>
@@ -75,3 +96,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     </article>
   </main>
 </Base>
+
+<script>
+  const workflowButton = document.querySelector<HTMLButtonElement>(".workflow-expand");
+  const workflowDialog = document.querySelector<HTMLDialogElement>("#workflow-dialog");
+  if (workflowButton && workflowDialog) {
+    workflowButton.addEventListener("click", () => workflowDialog.showModal());
+    workflowDialog.addEventListener("click", (event) => {
+      if (event.target === workflowDialog) {
+        const bounds = workflowDialog.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) workflowDialog.close();
+      }
+    });
+  }
+</script>

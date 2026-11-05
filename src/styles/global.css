@@ -130,6 +130,11 @@ h1 {
   line-height: 1.65;
 }
 
+.resume-contact {
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
 .resume-section + .resume-section {
   margin-top: 3rem;
 }
@@ -399,6 +404,67 @@ h1 {
 
 .project-description p {
   margin: 0 0 1em;
+}
+
+.project-workflow {
+  margin: 1.25rem 0 1rem;
+}
+
+.workflow-expand {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.workflow-expand:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 0.3rem;
+}
+
+.workflow-dialog {
+  width: min(96vw, 80rem);
+  max-width: 96vw;
+  max-height: 92svh;
+  margin: auto;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid #777;
+  border-radius: 0.75rem;
+  background: #f4f2ed;
+  color: #171714;
+}
+
+.workflow-dialog::backdrop {
+  background: rgb(0 0 0 / 75%);
+}
+
+.workflow-dialog form {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.workflow-close {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.workflow-close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 0.2rem;
+}
+
+.project-workflow img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
 }
 
 .project-overview {
